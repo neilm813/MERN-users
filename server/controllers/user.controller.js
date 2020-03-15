@@ -45,6 +45,15 @@ module.exports = {
   },
 
   logout(req, res) {
+    res
+      .cookie("usertoken", jwt.sign({ _id: "" }, process.env.JWT_SECRET), {
+        httpOnly: true,
+        maxAge: 0
+      })
+      .json({ msg: "ok" });
+  },
+
+  logout2(req, res) {
     res.clearCookie("usertoken");
     res.json({ msg: "usertoken cookie cleared" });
   },
