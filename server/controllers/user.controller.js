@@ -65,7 +65,7 @@ module.exports = {
   },
 
   getOne(req, res) {
-    User.findOne({ _id: req.params._id })
+    User.findOne({ _id: req.params.id })
       .then(user => res.json(user))
       .catch(err => res.json(err));
   }
