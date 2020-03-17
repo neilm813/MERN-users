@@ -35,10 +35,10 @@
     flex: 1;
 }
 
-.form-group>span, .error-message {
+.error-message {
     flex: 1;
     color: tomato;
-    text-align: center;
+    margin-left: 10px;
 }
 
 .btn {

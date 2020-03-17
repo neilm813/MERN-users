@@ -8,8 +8,8 @@ const SignUp = props => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  const register = e => {
-    e.preventDefault();
+  const register = event => {
+    event.preventDefault();
 
     const newUser = { username, email, password, confirmPassword };
 
@@ -20,16 +20,16 @@ const SignUp = props => {
       .then(res => {
         console.log(res);
 
-        if (res.data.errors) {
-          setErrors(res.data.errors);
-        } else {
-          setUsername("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-        }
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+
+        setErrors(err.response.data.errors);
+      });
   };
 
   return (
@@ -45,7 +45,11 @@ const SignUp = props => {
             onChange={e => setUsername(e.target.value)}
             value={username}
           />
-          {errors.username ? <span>{errors.username.message}</span> : ""}
+          {errors.username ? (
+            <span className="error-message">{errors.username.message}</span>
+          ) : (
+            ""
+          )}
         </div>
 
         <div className="form-group">
@@ -56,7 +60,11 @@ const SignUp = props => {
             onChange={e => setEmail(e.target.value)}
             value={email}
           />
-          {errors.email ? <span>{errors.email.message}</span> : ""}
+          {errors.email ? (
+            <span className="error-message">{errors.email.message}</span>
+          ) : (
+            ""
+          )}
         </div>
 
         <div className="form-group">
@@ -67,7 +75,11 @@ const SignUp = props => {
             onChange={e => setPassword(e.target.value)}
             value={password}
           />
-          {errors.password ? <span>{errors.password.message}</span> : ""}
+          {errors.password ? (
+            <span className="error-message">{errors.password.message}</span>
+          ) : (
+            ""
+          )}
         </div>
 
         <div className="form-group">
@@ -79,7 +91,9 @@ const SignUp = props => {
             value={confirmPassword}
           />
           {errors.confirmPassword ? (
-            <span>{errors.confirmPassword.message}</span>
+            <span className="error-message">
+              {errors.confirmPassword.message}
+            </span>
           ) : (
             ""
           )}

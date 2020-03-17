@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+
 import axios from "axios";
+import { navigate } from "@reach/router";
 
 const SignIn = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const login = e => {
-    e.preventDefault();
+  const login = event => {
+    event.preventDefault();
     axios
       .post(
         "http://localhost:8000/api/login",
@@ -18,13 +20,12 @@ const SignIn = props => {
       )
       .then(res => {
         console.log(res);
-        if (res.data.msg === "invalid login attempt") {
-          setErrorMessage("Invalid login attempt");
-        } else {
-          setErrorMessage("Success!");
-        }
+        navigate("/users");
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        setErrorMessage(err.response.data.msg);
+      });
   };
 
   return (

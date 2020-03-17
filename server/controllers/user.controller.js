@@ -12,14 +12,14 @@ module.exports = {
       .then(() => {
         res.json({ msg: "success!", user: user });
       })
-      .catch(err => res.json(err));
+      .catch(err => res.status(400).json(err));
   },
 
   login(req, res) {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (user === null) {
-          res.json({ msg: "invalid login attempt" });
+          res.status(400).json({ msg: "invalid login attempt" });
         } else {
           bcrypt
             .compare(req.body.password, user.password)
@@ -35,10 +35,12 @@ module.exports = {
                   )
                   .json({ msg: "success!" });
               } else {
-                res.json({ msg: "invalid login attempt" });
+                res.status(400).json({ msg: "invalid login attempt" });
               }
             })
-            .catch(err => res.json({ msg: "invalid login attempt" }));
+            .catch(err =>
+              res.status(400).json({ msg: "invalid login attempt" })
+            );
         }
       })
       .catch(err => res.json(err));
@@ -56,6 +58,14 @@ module.exports = {
   logout2(req, res) {
     res.clearCookie("usertoken");
     res.json({ msg: "usertoken cookie cleared" });
+  },
+
+  getLoggedInUser(req, res) {
+    const decodedJWT = jwt.decode(req.cookies.usertoken, { complete: true });
+
+    User.findById(decodedJWT.payload._id)
+      .then(user => res.json(user))
+      .catch(err => res.json(err));
   },
 
   getAll(req, res) {

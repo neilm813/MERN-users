@@ -5,6 +5,15 @@ import axios from "axios";
 const UserList = props => {
   const [users, setUsers] = useState([]);
 
+  const getLoggedInUser = () => {
+    axios
+      .get("http://localhost:8000/api/users/loggedin", {
+        withCredentials: true
+      })
+      .then(res => console.log(res))
+      .catch(console.log);
+  };
+
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/users", {
@@ -25,6 +34,7 @@ const UserList = props => {
   return (
     <div className="container">
       <h3>All Users:</h3>
+      <button onClick={getLoggedInUser}>Get Logged In User</button>
       <table>
         <tbody>
           <tr>
