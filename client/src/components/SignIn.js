@@ -3,26 +3,27 @@ import React, { useState } from "react";
 import axios from "axios";
 import { navigate } from "@reach/router";
 
-const SignIn = props => {
+const SignIn = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const login = event => {
+  const login = (event) => {
     event.preventDefault();
     axios
       .post(
         "http://localhost:8000/api/login",
         { email, password },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
+        setLoggedIn();
         navigate("/users");
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         setErrorMessage(err.response.data.msg);
       });
@@ -37,7 +38,7 @@ const SignIn = props => {
           <input
             type="text"
             name="email"
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             value={email}
           />
         </p>
@@ -46,7 +47,7 @@ const SignIn = props => {
           <input
             type="password"
             name="email"
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
         </p>

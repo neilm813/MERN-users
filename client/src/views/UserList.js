@@ -2,30 +2,30 @@ import React, { useState, useEffect } from "react";
 import { navigate } from "@reach/router";
 import axios from "axios";
 
-const UserList = props => {
+const UserList = (props) => {
   const [users, setUsers] = useState([]);
 
   const getLoggedInUser = () => {
     axios
       .get("http://localhost:8000/api/users/loggedin", {
-        withCredentials: true
+        withCredentials: true,
       })
-      .then(res => console.log(res))
+      .then((res) => console.log(res))
       .catch(console.log);
   };
 
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/users", {
-        withCredentials: true
+        withCredentials: true,
       })
-      .then(res => {
+      .then((res) => {
         setUsers(res.data);
         console.log(res);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("not authorized");
-        console.log(err);
+        console.log(err.response);
 
         navigate("/");
       });
@@ -42,7 +42,7 @@ const UserList = props => {
             <th>Email</th>
             <th>Created On</th>
           </tr>
-          {users.map(user => (
+          {users.map((user) => (
             <tr key={user._id}>
               <td>{user.username}</td>
               <td>{user.email}</td>

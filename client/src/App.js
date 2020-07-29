@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, navigate, Router } from "@reach/router";
 
 import LogReg from "./views/LogReg";
@@ -7,6 +7,8 @@ import UserList from "./views/UserList";
 import axios from "axios";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const logout = () => {
     axios
       .post(
@@ -14,11 +16,12 @@ function App() {
         {},
         {
           // need to send the cookie in request so server can clear it
-          withCredentials: true
+          withCredentials: true,
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
+        setIsLoggedIn(false);
       })
       .catch(console.log);
 
@@ -29,10 +32,10 @@ function App() {
     <>
       <div className="jumbotron">
         <h1>MERN Users</h1>
-        <button onClick={logout}>Logout</button>
+        {isLoggedIn && <button onClick={logout}>Logout</button>}
       </div>
       <Router>
-        <LogReg path="/" />
+        <LogReg setLoggedIn={() => setIsLoggedIn(true)} path="/" />
         <UserList path="/users" />
       </Router>
       <div className="container">

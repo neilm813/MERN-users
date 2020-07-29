@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const SignUp = props => {
+const SignUp = (props) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState(null);
 
-  const register = event => {
+  const register = (event) => {
     event.preventDefault();
 
     const newUser = { username, email, password, confirmPassword };
 
     axios
       .post("http://localhost:8000/api/register", newUser, {
-        withCredentials: true
+        withCredentials: true,
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
 
         setUsername("");
@@ -25,7 +25,7 @@ const SignUp = props => {
         setPassword("");
         setConfirmPassword("");
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
 
         setErrors(err.response.data.errors);
@@ -42,13 +42,14 @@ const SignUp = props => {
           <input
             type="text"
             name="username"
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
             value={username}
           />
-          {errors.username ? (
-            <span className="error-message">{errors.username.message}</span>
-          ) : (
-            ""
+          {/* ?. is called optional chaining, lets you safely try to access keys that might not exist and avoid errors */}
+          {errors?.username && (
+            <span className="error-message">
+              {errors.username?.properties?.message}
+            </span>
           )}
         </div>
 
@@ -57,13 +58,13 @@ const SignUp = props => {
           <input
             type="email"
             name="email"
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             value={email}
           />
-          {errors.email ? (
-            <span className="error-message">{errors.email.message}</span>
-          ) : (
-            ""
+          {errors?.email && (
+            <span className="error-message">
+              {errors.email?.properties?.message}
+            </span>
           )}
         </div>
 
@@ -72,13 +73,13 @@ const SignUp = props => {
           <input
             type="password"
             name="email"
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
-          {errors.password ? (
-            <span className="error-message">{errors.password.message}</span>
-          ) : (
-            ""
+          {errors?.password && (
+            <span className="error-message">
+              {errors.password?.properties?.message}
+            </span>
           )}
         </div>
 
@@ -87,12 +88,12 @@ const SignUp = props => {
           <input
             type="password"
             name="confirmPassword"
-            onChange={e => setConfirmPassword(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             value={confirmPassword}
           />
-          {errors.confirmPassword ? (
+          {errors?.confirmPassword ? (
             <span className="error-message">
-              {errors.confirmPassword.message}
+              {errors.confirmPassword?.properties?.message}
             </span>
           ) : (
             ""
